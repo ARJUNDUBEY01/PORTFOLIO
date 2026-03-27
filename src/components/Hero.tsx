@@ -52,6 +52,7 @@ export default function Hero() {
   return (
     <section 
       ref={heroRef}
+      id="hero"
       className="relative h-screen flex flex-col items-center justify-center bg-black overflow-hidden"
     >
       <div className="absolute inset-0 opacity-20">

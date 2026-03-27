@@ -6,10 +6,12 @@ import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Skills from '@/components/Skills';
 import Projects from '@/components/Projects';
+import Certificates from '@/components/Certificates';
 import Contact from '@/components/Contact';
 import Loader from '@/components/Loader';
 import Cursor from '@/components/Cursor';
 import Background from '@/components/Background';
+import Navbar from '@/components/Navbar';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -24,21 +26,29 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen">
+      <Navbar />
       <div className="noise" />
       <Background />
       <Cursor />
       
-      {loading && <Loader onComplete={() => setLoading(false)} />}
+      {/* Isolate conditional rendering in a dedicated container */}
+      <div id="status-layer">
+        {loading && <Loader onComplete={() => setLoading(false)} />}
+      </div>
       
-      <SmoothScroll>
-        <div className={loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-1000'}>
-          <Hero />
-          <About />
-          <Projects />
-          <Skills />
-          <Contact />
-        </div>
-      </SmoothScroll>
+      {/* Stable container for main site content */}
+      <div id="content-layer">
+        <SmoothScroll>
+          <div className={loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-1000'}>
+            <Hero />
+            <About />
+            <Projects />
+            <Certificates />
+            <Skills />
+            <Contact />
+          </div>
+        </SmoothScroll>
+      </div>
     </main>
   );
 }

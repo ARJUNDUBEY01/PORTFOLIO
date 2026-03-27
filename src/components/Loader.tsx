@@ -11,7 +11,7 @@ const GREETINGS = [
   'Bonjour',
   'Ciao',
   'Konnichiwa',
-  'Salaam',
+  'Khamma Ghani',
   'Arjun Dubey'
 ];
 
