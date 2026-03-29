@@ -1,259 +1,64 @@
 'use client';
-
-import { useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
-import Image from 'next/image';
-import { Github, ExternalLink, ArrowUpRight } from 'lucide-react';
-
-interface Project {
-  title: string;
-  desc: string;
-  tech: string[];
-  image: string;
-  github: string;
-  live: string;
-  bg: string;
-  accent: string;
-  icon: string;
-  num: string;
-}
-
-const PROJECTS: Project[] = [
-  {
-    title: 'VOTING-APP',
-    desc: 'A robust and modern voting application built with the MERN stack, offering secure and real-time polling capabilities.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Express'],
-    image: '/ui_dashboard_card_1773766220630.png',
-    github: 'https://github.com/ARJUNDUBEY01/VOTING-APP.git',
-    live: '#',
-    bg: '#0f0f1a', 
-    accent: '#e2b04a', 
-    icon: '✦', 
-    num: '01'
-  },
-  {
-    title: 'BlindNav AI',
-    desc: 'Assistive technology using computer vision to provide spatial awareness for visually impaired users.',
-    tech: ['React Native', 'OpenCV', 'Firebase'],
-    image: '/ui_project_preview_1773766248176.png',
-    github: '#',
-    live: '#',
-    bg: '#0d1f2d', 
-    accent: '#4af3e2', 
-    icon: '◈', 
-    num: '02'
-  },
-  {
-    title: 'KaamSetu',
-    desc: 'A socio-economic bridge connecting daily wage laborers with employment opportunities in real-time.',
-    tech: ['Next.js', 'Node.js', 'MongoDB'],
-    image: '/ui_analytics_card_1773766299017.png',
-    github: '#',
-    live: '#',
-    bg: '#12132a', 
-    accent: '#7aabff', 
-    icon: '⬡', 
-    num: '03'
-  },
-  {
-    title: 'Prop Firm App',
-    desc: 'A comprehensive financial dashboard for comparing proprietary trading firms rules and performance.',
-    tech: ['React', 'Express', 'PostgreSQL'],
-    image: '/ui_dashboard_card_1773766220630.png',
-    github: '#',
-    live: '#',
-    bg: '#1a0d2e', 
-    accent: '#cf80ff', 
-    icon: '⊕', 
-    num: '04'
-  },
-  {
-    title: 'AI Trading',
-    desc: 'Advanced market analytics engine utilizing neural networks for real-time trend detection.',
-    tech: ['React', 'Python', 'TensorFlow'],
-    image: '/ui_project_preview_1773766248176.png',
-    github: '#',
-    live: '#',
-    bg: '#0d1f18', 
-    accent: '#5ef0a0', 
-    icon: '★', 
-    num: '05'
-  }
-];
+import { useState, useEffect, useRef } from 'react';
+import { useInView } from './hooks';
 
 export default function Projects() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: wrapperRef,
-    offset: ["start start", "end end"]
-  });
+  const [scrollX, setScrollX] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [ref2, inView] = useInView(0.05);
+  useEffect(() => {
+    const onScroll = () => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const wh = window.innerHeight;
+      if (rect.top <= 0 && rect.bottom >= wh) {
+        setScrollX(Math.min(1, -rect.top / (rect.height - wh)));
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setActiveIndex(Math.round(latest * (PROJECTS.length - 1)));
-  });
-
-  // Calculate track x movement: from 0vw to -400vw
-  const trackX = useTransform(
-    scrollYProgress, 
-    [0, 1], 
-    ["0vw", `-${(PROJECTS.length - 1) * 100}vw`]
-  );
-
-  // Fade out the scroll hint shortly after starting to scroll
-  const scrollHintOpacity = useTransform(scrollYProgress, [0, 0.03], [1, 0]);
+  const projects = [
+    { title:"E-Commerce Platform", tag:"Full Stack", desc:"React + Node.js + PostgreSQL. Cart, payments, admin dashboard, real-time inventory.", color:"#e63c2f", tech:["React","Node","Stripe","PostgreSQL"] },
+    { title:"SaaS Dashboard", tag:"Frontend", desc:"Next.js analytics with live charts, user roles, dark/light mode and export features.", color:"#3c8be6", tech:["Next.js","TypeScript","Recharts","Tailwind"] },
+    { title:"REST API Engine", tag:"Backend", desc:"High-performance Node.js microservice handling 10k+ req/s with Redis caching.", color:"#3ce68b", tech:["Node.js","Express","Redis","Docker"] },
+    { title:"Real-time Chat", tag:"Full Stack", desc:"WebSocket messaging with rooms, media uploads, and end-to-end encryption.", color:"#e6c03c", tech:["Socket.io","React","MongoDB","AWS S3"] },
+    { title:"Portfolio CMS", tag:"Full Stack", desc:"Headless CMS with NestJS and React, drag-and-drop editor and markdown support.", color:"#c03ce6", tech:["NestJS","React","GraphQL","Prisma"] },
+  ];
+  const cardW = 380, gap = 28;
+  const maxTx = projects.length * (cardW + gap) - 900;
 
   return (
-    <section ref={wrapperRef} id="work" className="relative h-[600vh] bg-black">
-      <div className="sticky top-0 h-screen w-full overflow-hidden text-white font-sans">
-        
-        {/* Global Heading */}
-        <div className="absolute top-10 left-10 md:left-16 z-50 pointer-events-none mix-blend-difference">
-          <h2 className="text-sm md:text-xl uppercase tracking-[0.4em] font-black text-white/90">
-            SELECTED PROJECTS
-          </h2>
+    <section id="projects" ref={containerRef} style={{ height: "500vh", position: "relative" }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: "#0f0f0f", display: "flex", flexDirection: "column", justifyContent: "center", fontFamily: "'DM Sans', sans-serif" }}>
+        <div ref={ref2} style={{ padding: "0 52px", marginBottom: 48 }}>
+          <p style={{ color: "#e63c2f", fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12, opacity: inView?1:0, transition: "all 0.6s" }}>What I've Built</p>
+          <h2 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(48px,6vw,80px)", color: "#fff", lineHeight: 0.95, opacity: inView?1:0, transform: inView?"none":"translateY(24px)", transition: "all 0.7s ease 0.1s" }}>Selected<br/><span style={{ WebkitTextStroke:"1px rgba(255,255,255,0.35)", color:"transparent" }}>Projects.</span></h2>
         </div>
-
-        {/* The horizontal track */}
-        <motion.div 
-          style={{ x: trackX }} 
-          className="flex h-screen w-[500vw] will-change-transform"
-        >
-          {PROJECTS.map((project, index) => {
-            const isActive = index === activeIndex;
-
-            return (
-              <div 
-                key={project.num}
-                className="relative w-[100vw] h-screen flex shrink-0 items-center justify-center overflow-hidden"
-                style={{ backgroundColor: project.bg }}
-              >
-                {/* Large Translucent Blob Background Decoration */}
-                <div 
-                  className="absolute rounded-full blur-[80px] pointer-events-none transition-transform duration-1000 ease-out"
-                  style={{
-                    width: '60vw',
-                    height: '60vw',
-                    backgroundColor: project.accent,
-                    opacity: 0.13,
-                    top: index % 2 === 0 ? '-10%' : 'auto',
-                    bottom: index % 2 !== 0 ? '-10%' : 'auto',
-                    left: index % 2 !== 0 ? '-10%' : 'auto',
-                    right: index % 2 === 0 ? '-10%' : 'auto',
-                    transform: isActive ? 'scale(1)' : 'scale(1.5)',
-                  }}
-                />
-
-                {/* Content Layout */}
-                <div
-                  className={`
-                    relative z-10 flex flex-col items-center justify-center text-center w-full max-w-5xl px-6
-                    transition-all duration-[800ms] ease-out delay-100
-                    ${isActive ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-10 scale-[0.97]'}
-                  `}
-                >
-                  <div className="w-[52px] h-[52px] rounded-full border border-white/20 flex items-center justify-center text-xl mb-6 shadow-xl backdrop-blur-sm">
-                    {project.icon}
+        <div style={{ overflow: "hidden", paddingLeft: 52 }}>
+          <div style={{ display: "flex", gap, transform: `translateX(${-scrollX * Math.max(0, maxTx)}px)`, transition: "transform 0.0s linear", willChange: "transform" }}>
+            {projects.map((p) => (
+              <div key={p.title} style={{ minWidth: cardW, height: 340, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: "36px 32px", display: "flex", flexDirection: "column", justifyContent: "space-between", cursor: "pointer" }}>
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
+                    <span style={{ padding: "5px 14px", borderRadius: 50, fontSize: 11, background: p.color+"20", color: p.color, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500 }}>{p.tag}</span>
+                    <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 22 }}>↗</span>
                   </div>
-                  
-                  <h1 
-                    className="font-bold mb-2 tracking-tighter"
-                    style={{ 
-                      fontSize: 'clamp(5rem, 14vw, 10rem)', 
-                      color: project.accent,
-                      lineHeight: 0.9 
-                    }}
-                  >
-                    {project.num}
-                  </h1>
-                  
-                  <h2 
-                    className="font-light uppercase mb-6 tracking-[0.15em] drop-shadow-lg"
-                    style={{ fontSize: 'clamp(1.2rem, 2.8vw, 2.2rem)' }}
-                  >
-                    {project.title}
-                  </h2>
-                  
-                  <p 
-                    className="font-normal text-white/60 mb-10 max-w-xl text-center leading-relaxed"
-                    style={{ fontSize: 'clamp(0.8rem, 1.4vw, 0.95rem)' }}
-                  >
-                    {project.desc}
-                  </p>
-
-                  {/* Portfolio Additions: Tech Stack & Preview Image */}
-                  <div className="flex flex-wrap items-center justify-center gap-2 mb-10 opacity-70">
-                    {project.tech.map(t => (
-                      <span key={t} className="text-[10px] md:text-xs uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-md">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Project Image Box embedded stylishly below the text */}
-                  <div className="relative w-full max-w-2xl aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-                    <Image src={project.image} alt={project.title} fill className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    
-                    {/* Action Links */}
-                    <div className="absolute bottom-4 right-4 flex gap-3">
-                      <a href={project.github} target="_blank" rel="noreferrer" className="p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full transition-colors text-white border border-white/10">
-                        <Github size={18} />
-                      </a>
-                      <a href={project.live} target="_blank" rel="noreferrer" className="p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full transition-colors text-white border border-white/10">
-                        <ExternalLink size={18} />
-                      </a>
-                    </div>
-                  </div>
-
+                  <h3 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: 32, color: "#fff", marginBottom: 14 }}>{p.title}</h3>
+                  <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 1.7, fontWeight: 300 }}>{p.desc}</p>
+                </div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  {p.tech.map(t => <span key={t} style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", padding: "4px 10px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 50 }}>{t}</span>)}
                 </div>
               </div>
-            );
-          })}
-        </motion.div>
-
-        {/* UI Overlays */}
-
-        {/* Progress bar */}
-        <motion.div 
-          className="absolute bottom-0 left-0 h-[2.5px] z-50 origin-left"
-          style={{ 
-            width: '100%',
-            backgroundColor: PROJECTS[activeIndex]?.accent || '#e2b04a',
-            scaleX: scrollYProgress,
-            transition: 'background-color 0.5s ease'
-          }}
-        />
-
-        {/* Scroll hint */}
-        <motion.div 
-          style={{ opacity: scrollHintOpacity }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-50 pointer-events-none"
-        >
-          <span className="text-[10px] tracking-widest uppercase text-white/50 font-bold">Scroll</span>
-          <motion.div 
-            animate={{ y: [0, 8, 0] }} 
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-3 h-3 border-r-2 border-b-2 border-white/50 rotate-45 transform"
-          />
-        </motion.div>
-
-        {/* Dot navigation */}
-        <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50">
-          {PROJECTS.map((_, i) => (
-            <div 
-              key={i} 
-              className={`w-2 h-2 rounded-full transition-all duration-500 shadow-xl border border-white/20`}
-              style={{
-                backgroundColor: i === activeIndex ? PROJECTS[i].accent : 'rgba(255,255,255,0.1)',
-                transform: i === activeIndex ? 'scale(1.55)' : 'scale(1)',
-              }}
-            />
-          ))}
+            ))}
+          </div>
         </div>
-
+        <div style={{ margin: "32px 52px 0", height: 1, background: "rgba(255,255,255,0.07)" }}>
+          <div style={{ height: "100%", width: `${scrollX*100}%`, background: "#e63c2f", transition: "width 0.08s" }} />
+        </div>
       </div>
     </section>
   );

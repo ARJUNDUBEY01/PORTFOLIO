@@ -1,108 +1,54 @@
-'use client';
-
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import Image from 'next/image';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function About() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  // Using an array of words to ensure clean mapping
-  const wordsArray = "I am a passionate Full Stack Developer who loves building modern web applications, AI tools and scalable digital products. I enjoy working with cutting-edge technologies and creating clean, performant, and user-focused digital experiences.".split(" ");
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-
-    let ctx = gsap.context(() => {
-      // 1. Text Reveal Animation (Grey to White)
-      const words = gsap.utils.toArray('.about-word');
-      
-      gsap.to(words, {
-        color: "white",
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          end: "bottom 90%",
-          scrub: 1,
-        }
-      });
-
-      // 2. Section Entrance
-      gsap.from(sectionRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        }
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [isMounted]);
+  // Image comes in during early scroll (0.1 to 0.4) then stays firmly LOCKED for the remainder (0.4 to 1) 
+  const imgY = useTransform(scrollYProgress, [0.1, 0.4], ["100vh", "0vh"]);
+  const imgOpacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="about" 
-      className="py-32 px-6 md:px-20 bg-black min-h-screen flex items-center justify-center"
-    >
-      <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-20 items-center">
+    <section id="about" ref={containerRef} style={{ height: "300vh", position: "relative", background: "#0f0f0f", fontFamily: "'DM Sans', sans-serif" }}>
+      {/* Sticky container holds the layout incredibly solid while scrolling */}
+      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", padding: "0 52px", overflow: "hidden" }}>
         
-        {/* Left Side: Text Content */}
-        <div className="flex flex-col items-start w-full text-left order-2 md:order-1">
-          <h2 className="text-sm uppercase tracking-[0.5em] text-white/20 mb-10">Who I am</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, maxWidth: 1100, margin: "0 auto", width: "100%", alignItems: "center" }}>
           
-          <div className="text-2xl md:text-3xl lg:text-4xl font-semibold leading-relaxed text-white/20">
-            {wordsArray.map((word, i) => (
-              <span key={i} className="about-word">
-                {word}{" "}
-              </span>
-            ))}
+          {/* Left Text Layer */}
+          <div>
+            <p style={{ color: "#e63c2f", fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>Who I Am</p>
+            <h2 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(48px,6vw,80px)", color: "#fff", lineHeight: 0.95, marginBottom: 28 }}>Building digital<br/>experiences<br/><span style={{ WebkitTextStroke: "1px rgba(255,255,255,0.4)", color: "transparent" }}>that matter.</span></h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 15, lineHeight: 1.8, fontWeight: 300, marginBottom: 20 }}>I'm a passionate Full Stack Developer from Ahmedabad, India, crafting robust, scalable applications from pixel-perfect frontends to resilient backend architectures.</p>
+            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 14, lineHeight: 1.9, fontWeight: 300 }}>I obsess over developer experience, performance, and clean code. Whether it's a React SPA, a Node.js microservice, or a complex database architecture — I bring the same energy to every layer of the stack.</p>
           </div>
-        </div>
 
-        {/* Right Side: Profile Picture with Hover Reveal Effect */}
-        <div className="flex justify-center md:justify-end order-1 md:order-2">
-          <div 
-            className="group relative w-48 h-48 md:w-64 md:h-64 cursor-none"
-          >
-            {/* Hover Hint / Frame */}
-            <div className="absolute inset-0 border-2 border-dashed border-white/20 rounded-full flex items-center justify-center group-hover:border-accent group-hover:border-solid transition-all duration-700 bg-white/[0.02]">
-               <span className="text-[10px] uppercase tracking-[0.3em] text-white/60 group-hover:opacity-0 transition-opacity">Hover to Reveal</span>
-            </div>
-
-            {/* Inner Image Container (Reveals on Hover) */}
-            <div 
-              ref={imageRef} 
-              className="absolute inset-0 w-full h-full overflow-hidden rounded-full glass opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-1000 ease-out shadow-[0_0_50px_rgba(99,102,241,0.2)]"
-            >
-              {isMounted && (
-                <Image 
-                  src="/arjun-clean.png" 
-                  alt="Arjun Dubey"
-                  fill
-                  className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                  priority
-                />
-              )}
-            </div>
-
-            {/* Accent Ring */}
-            <div className="absolute -inset-2 border border-accent/20 rounded-full scale-110 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-1000 pointer-events-none" />
+          {/* Right Floating Image */}
+          <div style={{ position: "relative", height: "100%", width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "flex-end", zIndex: 10 }}>
+            <motion.img 
+              src="/arjun-new.jpg"
+              alt="Arjun Dubey Portrait"
+              style={{
+                y: imgY,
+                opacity: imgOpacity,
+                maxWidth: "100%",
+                maxHeight: "75vh", 
+                height: "auto",
+                width: "auto",
+                objectFit: "contain", 
+                objectPosition: "bottom", 
+                filter: "grayscale(100%)", 
+                borderRadius: 20,
+              }}
+            />
           </div>
-        </div>
 
+        </div>
       </div>
     </section>
   );

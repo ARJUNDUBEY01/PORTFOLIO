@@ -1,98 +1,56 @@
 'use client';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { S, PHOTO } from './shared';
 
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { motion } from 'framer-motion';
+export default function Hero({ scrollY }: { scrollY: number }) {
+  const scale = 1 + Math.min(scrollY / 800, 0.15);
+  const opacity = Math.max(0, 1 - scrollY / 400);
+  const ty = -scrollY * 0.2;
 
-export default function Hero() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const title1Ref = useRef<HTMLHeadingElement>(null);
-  const title2Ref = useRef<HTMLHeadingElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
-  const [shapes, setShapes] = useState<{ x: string, y: string, scale: number, duration: number }[]>([]);
-
-  useEffect(() => {
-    setIsMounted(true);
-    // Populate shapes on client-side only to reconcile with server shell
-    const newShapes = [...Array(20)].map(() => ({
-      x: Math.random() * 100 + '%',
-      y: Math.random() * 100 + '%',
-      scale: Math.random() * 0.5 + 0.5,
-      duration: Math.random() * 5 + 5
-    }));
-    setShapes(newShapes);
-  }, []);
+  const roles = ["Full Stack Developer", "Creator", "Engineer"];
+  const [roleIndex, setRoleIndex] = useState(0);
 
   useEffect(() => {
-    if (!isMounted) return;
+    const intervalId = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+    }, 1500); // Change role every 1.5 seconds
 
-    let ctx = gsap.context(() => {
-      gsap.to('.text-reveal span', {
-        y: 0,
-        stagger: 0.1,
-        duration: 1,
-        ease: 'power4.out',
-      });
-
-      gsap.to(heroRef.current, {
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-        opacity: 0,
-        y: 100,
-      });
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, [isMounted]);
+    return () => clearInterval(intervalId);
+  }, [roles.length]);
 
   return (
-    <section 
-      ref={heroRef}
-      id="hero"
-      className="relative h-screen flex flex-col items-center justify-center bg-black overflow-hidden"
-    >
-      <div className="absolute inset-0 opacity-20">
-        {/* Render shapes consistently. Server will render empty array, client will fill it. */}
-        {shapes.map((shape, i) => (
-          <motion.div
-            key={i}
-            initial={{ 
-              x: shape.x, 
-              y: shape.y,
-              scale: shape.scale
-            }}
-            animate={{ 
-              y: [null, '-20%', '20%'],
-              x: [null, '10%', '-10%'],
-            }}
-            transition={{ 
-              duration: shape.duration, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-            className="absolute w-2 h-2 bg-accent rounded-full blur-[2px]"
-          />
-        ))}
+    <section id="hero" style={{ position: "relative", height: "100vh", overflow: "hidden", display: "flex", alignItems: "center", background: "#080808", fontFamily: "'DM Sans', sans-serif" }}>
+      <div style={{ position: "absolute", right: 0, bottom: 0, width: "46%", height: "100%", transform: `scale(${scale})`, transformOrigin: "bottom center", zIndex: 1 }}>
+        <img src={PHOTO} alt="portrait" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", filter: "grayscale(100%) contrast(1.1)", maskImage: "linear-gradient(to right, transparent 0%, black 30%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 30%)" }} />
       </div>
+      <div style={{ position: "relative", zIndex: 2, padding: "0 52px", opacity, transform: `translateY(${ty}px)`, transition: "opacity 0.05s", width: "100%" }}>
+        <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 17, fontWeight: 300, marginBottom: 10 }}>👋 Hi there — I'm</p>
+        <h1 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(72px,11vw,168px)", lineHeight: 0.9, letterSpacing: -1, color: "#fff", margin: 0 }}>Arjun Dubey</h1>
+        
+        {/* Animated Role Text */}
+        <div style={{ height: "clamp(72px, 11vw, 168px)", overflow: "hidden", position: "relative", marginTop: 5 }}>
+            <h1 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(72px,11vw,168px)", lineHeight: 0.9, letterSpacing: -1, color: "transparent", WebkitTextStroke: "1.5px rgba(255,255,255,0.5)", margin: 0, position: "absolute", width: "100%" }}>
+              <AnimatePresence mode="popLayout">
+                <motion.span
+                  key={roles[roleIndex]}
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -50, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  style={{ display: "inline-block" }}
+                >
+                  {roles[roleIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </h1>
+        </div>
 
-      <div className="z-10 text-center">
-        <h1 className="text-reveal giant-text mb-4">
-          <span ref={title1Ref} className="inline-block transition-transform duration-1000">ARJUN DUBEY</span>
-        </h1>
-        <h1 className="text-reveal text-5xl md:text-8xl font-black text-white/50 mb-8">
-          <span ref={title2Ref} className="inline-block transition-transform duration-1000">FULL STACK DEVELOPER</span>
-        </h1>
-        <p className="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto font-light tracking-wide px-4">
-          I build modern web applications, AI tools and scalable digital products.
-        </p>
-      </div>
-
-      <div className="absolute bottom-10 animate-bounce">
-        <div className="w-1 h-12 bg-gradient-to-b from-white to-transparent rounded-full" />
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 15, fontWeight: 300, marginTop: 18 }}>based in Ahmedabad, India.</p>
+        <div style={{ display: "flex", gap: 14, marginTop: 36 }}>
+          <a href="#projects" style={S.cta as any}>You need a frontend dev</a>
+          <a href="#contact" style={{ ...S.cta, background: "transparent", border: "1.5px solid rgba(255,255,255,0.35)" } as any}>You need a backend dev</a>
+        </div>
       </div>
     </section>
   );
