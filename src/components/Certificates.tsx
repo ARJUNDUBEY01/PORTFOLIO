@@ -48,10 +48,12 @@ export default function Certificates() {
         {/* The Floating Certificates Reveal */}
         <motion.div style={{ position: "absolute", width: "100%", height: "100%", opacity: certOpacity, scale: certScale, zIndex: 5 }}>
            
-           {/* Center Title that fades in when certificates arrive */}
-           <div style={{ position: "absolute", top: "45%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center", zIndex: 1, pointerEvents: "none" }}>
-              <p style={{ color: "#e63c2f", fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12 }}>Official</p>
-              <h3 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(48px,8vw,100px)", color: "rgba(255,255,255,0.05)", margin: 0, whiteSpace: "nowrap" }}>Recognitions</h3>
+           {/* Center Title & Ambient Glow that fades in when certificates arrive */}
+           <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center", zIndex: 1, pointerEvents: "none", width: "100%" }}>
+              {/* Massive ambient radial glow backlight */}
+              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70vw", height: "70vw", background: "radial-gradient(circle, rgba(230,60,47,0.15) 0%, rgba(255,255,255,0.05) 40%, rgba(8,8,8,0) 70%)", filter: "blur(40px)", zIndex: -1 }}></div>
+              <p style={{ color: "#e63c2f", fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12, textShadow: "0 0 20px rgba(230,60,47,0.8)" }}>Official</p>
+              <h3 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(48px,9vw,110px)", color: "#fff", margin: 0, whiteSpace: "nowrap", textShadow: "0 10px 50px rgba(255,255,255,0.4)" }}>Recognitions</h3>
            </div>
 
            {/* Floating Certificates */}
@@ -75,15 +77,15 @@ export default function Certificates() {
                  style={{ 
                    borderRadius: 16, 
                    overflow: "hidden", 
-                   border: "1px solid rgba(255,255,255,0.1)", 
-                   background: "rgba(255,255,255,0.02)", 
+                   border: "1px solid rgba(255,255,255,0.3)", 
+                   background: "rgba(255,255,255,0.05)", 
                    padding: 12, 
-                   boxShadow: "0 25px 50px -12px rgba(0,0,0,0.7)",
+                   boxShadow: "0 25px 50px -12px rgba(0,0,0,0.9), 0 0 40px rgba(255,255,255,0.15)",
                    rotate: cert.rotate 
                  }}
                >
                  <a href={cert.src} target="_blank" rel="noopener noreferrer" style={{ display: "block", cursor: "pointer", transition: "transform 0.2s" }} onMouseEnter={e => e.currentTarget.style.transform = "scale(1.02)"} onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
-                   <img src={cert.src} alt={`Certificate ${i+1}`} style={{ width: "100%", height: "auto", borderRadius: 8, display: "block" }} />
+                   <img src={cert.src} alt={`Certificate ${i+1}`} style={{ width: "100%", height: "auto", borderRadius: 8, display: "block", filter: "brightness(1.15)" }} />
                  </a>
                </motion.div>
              </motion.div>

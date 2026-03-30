@@ -12,7 +12,9 @@ export default function Contact() {
         <h2 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(56px,9vw,120px)", color: "#fff", lineHeight: 0.9, marginBottom: 24 }}>Got a project<br/><span style={{ WebkitTextStroke:"1.5px rgba(255,255,255,0.35)", color:"transparent" }}>in mind?</span></h2>
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 16, lineHeight: 1.8, fontWeight: 300, marginBottom: 48 }}>I'm always open to new opportunities. Whether it's a startup, an enterprise project, or just a great idea — let's build something amazing together.</p>
         <div style={{ marginTop: 40, marginBottom: 56 }}>
-          <form action="mailto:hello@dev.com" method="post" encType="text/plain" style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "left" }}>
+          <form action="https://formsubmit.co/arjundubey335@gmail.com" method="POST" style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "left" }}>
+            <input type="hidden" name="_subject" value="New Message From Portfolio!" />
+            <input type="hidden" name="_captcha" value="false" />
             <input type="text" name="Name" placeholder="Your Name" required style={{ width: "100%", padding: "16px 20px", borderRadius: 12, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 15, outline: "none" }} />
             <input type="email" name="Email" placeholder="Your Email Address" required style={{ width: "100%", padding: "16px 20px", borderRadius: 12, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 15, outline: "none" }} />
             <textarea name="Message" placeholder="How can I help you?" rows={4} required style={{ width: "100%", padding: "16px 20px", borderRadius: 12, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 15, outline: "none", resize: "vertical" }}></textarea>
@@ -21,11 +23,12 @@ export default function Contact() {
         </div>
         <div style={{ display: "flex", gap: "24px 32px", justifyContent: "center", flexWrap: "wrap", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 40 }}>
           {[
-            { name: "LinkedIn", url: "https://linkedin.com/in/" },
-            { name: "GitHub", url: "https://github.com/" },
-            { name: "LeetCode", url: "https://leetcode.com/" },
-            { name: "Twitter", url: "https://twitter.com/" },
-            { name: "+91 00000 00000", url: "tel:+910000000000" }
+            { name: "LinkedIn", url: "https://www.linkedin.com/in/arjun-dubey-65891239b/" },
+            { name: "GitHub", url: "https://github.com/ARJUNDUBEY01" },
+            { name: "LeetCode", url: "https://leetcode.com/u/ArjunDubey034/" },
+            { name: "Twitter / X", url: "https://x.com/ArjunDubey01" },
+            { name: "Resume", url: "/resume.pdf" },
+            { name: "Email Me", url: "mailto:arjundubey335@gmail.com" }
           ].map(s => (
             <a key={s.name} href={s.url} target="_blank" rel="noreferrer" style={{color:"rgba(255,255,255,0.4)",fontSize:13,textDecoration:"none",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500}}>
               {s.name}

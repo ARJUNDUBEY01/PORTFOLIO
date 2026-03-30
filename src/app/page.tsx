@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import Lenis from '@studio-freight/lenis';
 import { useScrollY } from '../components/hooks';
 import Nav from '../components/Nav';
 import Hero from '../components/Hero';
@@ -12,6 +14,27 @@ import Contact from '../components/Contact';
 
 export default function Home() {
   const scrollY = useScrollY();
+
+  useEffect(() => {
+    if (window.innerWidth < 768) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+      smoothWheel: true, 
+      wheelMultiplier: 1, 
+      touchMultiplier: 2, 
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
+  }, []);
+
   return (
     <main style={{ background: '#080808' }}>
       <style>{`

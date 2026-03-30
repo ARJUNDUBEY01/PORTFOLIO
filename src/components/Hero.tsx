@@ -21,16 +21,16 @@ export default function Hero({ scrollY }: { scrollY: number }) {
 
   return (
     <section id="hero" style={{ position: "relative", height: "100vh", overflow: "hidden", display: "flex", alignItems: "center", background: "#080808", fontFamily: "'DM Sans', sans-serif" }}>
-      <div style={{ position: "absolute", right: 0, bottom: 0, width: "46%", height: "100%", transform: `scale(${scale})`, transformOrigin: "bottom center", zIndex: 1 }}>
-        <img src={PHOTO} alt="portrait" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", filter: "grayscale(100%) contrast(1.1)", maskImage: "linear-gradient(to right, transparent 0%, black 30%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 30%)" }} />
+      <div className="absolute right-0 bottom-0 w-full md:w-[46%] h-full opacity-30 md:opacity-100 mix-blend-lighten pointer-events-none" style={{ transform: `scale(${scale})`, transformOrigin: "bottom center", zIndex: 1 }}>
+        <img src={PHOTO} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", filter: "grayscale(100%) contrast(1.1)", maskImage: "linear-gradient(to right, transparent 0%, black 30%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 30%)" }} />
       </div>
-      <div style={{ position: "relative", zIndex: 2, padding: "0 52px", opacity, transform: `translateY(${ty}px)`, transition: "opacity 0.05s", width: "100%" }}>
+      <div style={{ position: "relative", zIndex: 2, opacity, transform: `translateY(${ty}px)`, transition: "opacity 0.05s", width: "100%" }} className="px-5 md:px-[52px]">
         <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 17, fontWeight: 300, marginBottom: 10 }}>👋 Hi there — I'm</p>
-        <h1 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(72px,11vw,168px)", lineHeight: 0.9, letterSpacing: -1, color: "#fff", margin: 0 }}>Arjun Dubey</h1>
+        <h1 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(52px,11vw,168px)", lineHeight: 0.9, letterSpacing: -1, color: "#fff", margin: 0 }}>Arjun Dubey</h1>
         
         {/* Animated Role Text */}
-        <div style={{ height: "clamp(72px, 11vw, 168px)", overflow: "hidden", position: "relative", marginTop: 5 }}>
-            <h1 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(72px,11vw,168px)", lineHeight: 0.9, letterSpacing: -1, color: "transparent", WebkitTextStroke: "1.5px rgba(255,255,255,0.5)", margin: 0, position: "absolute", width: "100%" }}>
+        <div style={{ height: "clamp(52px, 11vw, 168px)", overflow: "hidden", position: "relative", marginTop: 5 }}>
+            <h1 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(52px,11vw,168px)", lineHeight: 0.9, letterSpacing: -1, color: "transparent", WebkitTextStroke: "1.5px rgba(255,255,255,0.5)", margin: 0, position: "absolute", width: "100%" }}>
               <AnimatePresence mode="popLayout">
                 <motion.span
                   key={roles[roleIndex]}
@@ -47,7 +47,7 @@ export default function Hero({ scrollY }: { scrollY: number }) {
         </div>
 
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 15, fontWeight: 300, marginTop: 18 }}>based in Ahmedabad, India.</p>
-        <div style={{ display: "flex", gap: 14, marginTop: 36 }}>
+        <div style={{ marginTop: 36 }} className="flex flex-col sm:flex-row gap-4">
           <a href="#projects" style={S.cta as any}>You need a frontend dev</a>
           <a href="#contact" style={{ ...S.cta, background: "transparent", border: "1.5px solid rgba(255,255,255,0.35)" } as any}>You need a backend dev</a>
         </div>

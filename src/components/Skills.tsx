@@ -49,17 +49,17 @@ export default function Skills() {
         <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 1300, height: "100%", margin: "0 auto", pointerEvents: "none" }}>
           
           {/* Card 1: Left */}
-          <motion.div style={{ position: "absolute", left: "2%", top: "25%", width: "clamp(280px, 90vw, 350px)", y: leftY, pointerEvents: "auto" }}>
+          <motion.div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[2%] top-[5%] md:top-[25%] w-[90vw] md:w-[clamp(280px,30vw,350px)]" style={{ y: leftY, pointerEvents: "auto" }}>
             <SkillCard data={skills[0]} />
           </motion.div>
 
           {/* Card 2: Right */}
-          <motion.div style={{ position: "absolute", right: "2%", top: "40%", width: "clamp(280px, 90vw, 350px)", y: rightY, pointerEvents: "auto" }}>
+          <motion.div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[2%] top-[35%] md:top-[40%] w-[90vw] md:w-[clamp(280px,30vw,350px)]" style={{ y: rightY, pointerEvents: "auto" }}>
             <SkillCard data={skills[1]} />
           </motion.div>
 
-          {/* Card 3: Middle (overlaps text) */}
-          <motion.div style={{ position: "absolute", left: "50%", x: "-50%", top: "35%", width: "clamp(280px, 92vw, 380px)", y: middleY, pointerEvents: "auto", zIndex: 10 }}>
+          {/* Card 3: Middle (below text) */}
+          <motion.div className="absolute left-1/2 -translate-x-1/2 top-[65%] w-[90vw] md:w-[clamp(280px,30vw,380px)] z-10" style={{ y: middleY, pointerEvents: "auto" }}>
             <SkillCard data={skills[2]} />
           </motion.div>
 
