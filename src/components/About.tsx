@@ -16,9 +16,9 @@ export default function About() {
   return (
     <section id="about" ref={containerRef} style={{ height: "300vh", position: "relative", background: "#0f0f0f", fontFamily: "'DM Sans', sans-serif" }}>
       {/* Sticky container holds the layout incredibly solid while scrolling */}
-      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }} className="px-5 md:px-[52px]">
+      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", width: "100%" }} className="px-5">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[80px] max-w-[1100px] mx-auto w-full items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[80px] max-w-[1280px] mx-auto w-full items-center">
           
           {/* Left Text Layer */}
           <div>

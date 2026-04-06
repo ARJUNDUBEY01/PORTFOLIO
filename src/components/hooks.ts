@@ -17,8 +17,19 @@ export function useInView(threshold = 0.15) {
 export function useScrollY() {
   const [y, setY] = useState(0);
   useEffect(() => {
-    const fn = () => setY(window.scrollY);
+    let ticking = false;
+    const fn = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", fn, { passive: true });
+    // Initialize properly
+    fn();
     return () => window.removeEventListener("scroll", fn);
   }, []);
   return y;

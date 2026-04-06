@@ -13,7 +13,7 @@ const Row = ({ items, reverse = false }: { items: any[], reverse?: boolean }) =>
       >
         {/* We duplicate the items 3 times so the loop never runs out of content mid-screen */}
         {[...items, ...items, ...items].map((item, i) => (
-          <div key={i} style={{ minWidth: 420, height: 280, borderRadius: 24, overflow: "hidden", position: "relative", border: "1px solid rgba(255,255,255,0.05)", background: "#111", flexShrink: 0 }}>
+          <div key={i} className="min-w-[85vw] md:min-w-[420px]" style={{ height: 280, borderRadius: 24, overflow: "hidden", position: "relative", border: "1px solid rgba(255,255,255,0.05)", background: "#111", flexShrink: 0 }}>
             <img 
               src={item.img} 
               alt={item.title} 
@@ -49,10 +49,10 @@ export default function Clones() {
   ];
 
   return (
-    <section id="clones" style={{ padding: "120px 0", background: "#0f0f0f", overflow: "hidden" }}>
+    <section id="clones" className="py-20 md:py-[120px] bg-[#0f0f0f] overflow-hidden">
       
       {/* Header section */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 52px", marginBottom: 80 }}>
+      <div className="max-w-[1280px] mx-auto px-5 md:px-[52px] mb-10 md:mb-20">
         <p style={{ color: "#e63c2f", fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12 }}>Replicating Greatness</p>
         <h2 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(60px,8vw,100px)", color: "#fff", lineHeight: 0.9, margin: 0 }}>
           Pixel-Perfect <span style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)", color: "transparent" }}>Clones</span>

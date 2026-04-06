@@ -6,8 +6,8 @@ import { S } from './shared';
 export default function Contact() {
   const [ref, inView] = useInView(0.1);
   return (
-    <section id="contact" style={{ minHeight: "100vh", background: "#0f0f0f", display: "flex", alignItems: "center", justifyContent: "center", padding: "120px 52px", fontFamily: "'DM Sans', sans-serif", position: "relative", overflow: "hidden" }}>
-      <div ref={ref} style={{ textAlign: "center", maxWidth: 700, position: "relative", zIndex: 2, opacity: inView?1:0, transform: inView?"scale(1)":"scale(0.9)", transition: "all 0.9s ease" }}>
+    <section id="contact" className="py-20 px-5 md:py-[120px] md:px-[52px]" style={{ minHeight: "100vh", background: "#0f0f0f", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', sans-serif", position: "relative", overflow: "hidden", padding: undefined }}>
+      <div ref={ref} className="w-full" style={{ textAlign: "center", maxWidth: 700, position: "relative", zIndex: 2, opacity: inView?1:0, transform: inView?"scale(1)":"scale(0.9)", transition: "all 0.9s ease" }}>
         <p style={{ color: "#e63c2f", fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>Let's Work Together</p>
         <h2 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(56px,9vw,120px)", color: "#fff", lineHeight: 0.9, marginBottom: 24 }}>Got a project<br/><span style={{ WebkitTextStroke:"1.5px rgba(255,255,255,0.35)", color:"transparent" }}>in mind?</span></h2>
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 16, lineHeight: 1.8, fontWeight: 300, marginBottom: 48 }}>I'm always open to new opportunities. Whether it's a startup, an enterprise project, or just a great idea — let's build something amazing together.</p>
