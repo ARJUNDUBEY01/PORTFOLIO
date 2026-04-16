@@ -2,15 +2,15 @@ const PHOTO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAg
 
 const S = {
   nav: {
-    position: "fixed" as const, top: 0, left: 0, right: 0, zIndex: 1000,
+    position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
     display: "flex", alignItems: "center", justifyContent: "space-between",
     padding: "20px 48px",
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'DM Sans', sans-serif"
   },
   logo: { fontFamily: "'Bebas Neue', cursive", fontSize: 26, letterSpacing: 1, color: "#fff", display: "flex", alignItems: "baseline" },
   dot: { color: "#e63c2f", fontSize: 32 },
   links: { display: "flex", gap: 32, listStyle: "none", margin: 0, padding: 0 },
   link: { color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 13, letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 500 },
-  cta: { background: "#e63c2f", color: "#fff", border: "none", padding: "10px 22px", borderRadius: 50, fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.03em", fontWeight: 500, textDecoration: "none" },
+  cta: { background: "#e63c2f", color: "#fff", border: "none", padding: "10px 22px", borderRadius: 50, fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.03em", fontWeight: 500, textDecoration: "none" }
 };
 export { PHOTO, S };

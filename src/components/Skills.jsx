@@ -2,7 +2,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-function SkillCard({ data }: { data: any }) {
+function SkillCard({ data }) {
   return (
     <div style={{ background: "rgba(12,12,12,0.95)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "40px 32px", boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
@@ -10,12 +10,12 @@ function SkillCard({ data }: { data: any }) {
         <span style={{ color: data.color, fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 500 }}>{data.cat}</span>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-        {data.items.map((item: string) => (
-          <span key={item} style={{ padding: "8px 18px", borderRadius: 50, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.75)", fontSize: 13 }}>{item}</span>
-        ))}
+        {data.items.map((item) =>
+        <span key={item} style={{ padding: "8px 18px", borderRadius: 50, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.75)", fontSize: 13 }}>{item}</span>
+        )}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 export default function Skills() {
@@ -30,10 +30,10 @@ export default function Skills() {
   const middleY = useTransform(scrollYProgress, [0.4, 0.75], ["120vh", "0vh"]);
 
   const skills = [
-    { cat:"Frontend", color:"#e63c2f", items:["React","Next.js","TypeScript","Tailwind CSS","Framer Motion","Redux"] },
-    { cat:"Backend", color:"#3c8be6", items:["Node.js","Express","NestJS","REST APIs","GraphQL","WebSockets"] },
-    { cat:"Database & Cloud", color:"#3ce68b", items:["PostgreSQL","MongoDB","Redis","Docker","AWS","CI/CD"] },
-  ];
+  { cat: "Frontend", color: "#e63c2f", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Redux"] },
+  { cat: "Backend", color: "#3c8be6", items: ["Node.js", "Express", "NestJS", "REST APIs", "GraphQL", "WebSockets"] },
+  { cat: "Database & Cloud", color: "#3ce68b", items: ["PostgreSQL", "MongoDB", "Redis", "Docker", "AWS", "CI/CD"] }];
+
 
   return (
     <section id="skills" ref={containerRef} style={{ height: "400vh", position: "relative", background: "#080808", fontFamily: "'DM Sans', sans-serif" }}>
@@ -42,7 +42,7 @@ export default function Skills() {
         {/* Center Sticky Text */}
         <div style={{ position: "absolute", zIndex: 1, textAlign: "center", width: "100%" }}>
           <p style={{ color: "#e63c2f", fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12 }}>What I Use</p>
-          <h2 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(64px,12vw,160px)", color: "#fff", lineHeight: 0.9, margin: 0 }}>My Tech<br/><span style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)", color: "transparent" }}>Arsenal.</span></h2>
+          <h2 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(64px,12vw,160px)", color: "#fff", lineHeight: 0.9, margin: 0 }}>My Tech<br /><span style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)", color: "transparent" }}>Arsenal.</span></h2>
         </div>
 
         {/* Cards Wrapper */}
@@ -65,6 +65,6 @@ export default function Skills() {
 
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 }

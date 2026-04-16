@@ -7,11 +7,11 @@ export function useInView(threshold = 0.15) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
+    const obs = new IntersectionObserver(([e]) => {if (e.isIntersecting) setInView(true);}, { threshold });
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-  return [ref, inView] as const;
+  return [ref, inView];
 }
 
 export function useScrollY() {
