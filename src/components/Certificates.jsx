@@ -7,8 +7,7 @@ const certs = [
   { src: "/certificates/cert3.png" },
   { src: "/certificates/cert4.png" },
   { src: "/certificates/cert5.png" },
-  { src: "/certificates/cert6.png" },
-  { src: "/certificates/cert7.png" }
+  { src: "/certificates/cert6.png" }
 ];
 
 const TiltCard = ({ src, index }) => {
