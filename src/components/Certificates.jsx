@@ -1,98 +1,138 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-export default function Certificates() {
-  const containerRef = useRef(null);
+const certs = [
+  { src: "/certificates/cert1.png" },
+  { src: "/certificates/cert2.png" },
+  { src: "/certificates/cert3.png" },
+  { src: "/certificates/cert4.png" },
+  { src: "/certificates/cert5.png" },
+  { src: "/certificates/cert6.png" },
+  { src: "/certificates/cert7.png" }
+];
 
-  // Creates a large scroll container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+const TiltCard = ({ src, index }) => {
+  const ref = useRef(null);
 
-  // Zoom text animation: smoothly completes (0 to 0.3 progress)
-  const textScale = useTransform(scrollYProgress, [0, 0.3], [1, 80]);
-  const textOpacity = useTransform(scrollYProgress, [0.2, 0.35], [1, 0]);
-  const textDisplay = useTransform(scrollYProgress, (v) => v > 0.4 ? "none" : "flex");
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  // Certificates emerge cleanly right as the text finishes vanishing
-  const certOpacity = useTransform(scrollYProgress, [0.28, 0.4], [0, 1]);
-  const certScale = useTransform(scrollYProgress, [0.28, 0.4], [0, 1]);
+  // Smooth out the mouse movements
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
 
-  // Very gentle Y parallax speeds so they don't crash into the navbar
-  const y1 = useTransform(scrollYProgress, [0.3, 1], ["0vh", "-8vh"]);
-  const y2 = useTransform(scrollYProgress, [0.3, 1], ["5vh", "-12vh"]);
-  const y3 = useTransform(scrollYProgress, [0.3, 1], ["-2vh", "-5vh"]);
-  const y4 = useTransform(scrollYProgress, [0.3, 1], ["8vh", "-15vh"]);
-  const y5 = useTransform(scrollYProgress, [0.3, 1], ["-5vh", "2vh"]);
-  const y6 = useTransform(scrollYProgress, [0.3, 1], ["10vh", "-6vh"]);
-  const y7 = useTransform(scrollYProgress, [0.3, 1], ["-8vh", "-10vh"]);
+  // Map mouse position to 3D rotation angles
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
+  
+  // Map mouse position to a cool shiny glare effect
+  const glareOpacity = useTransform(x, [-0.5, 0.5], [0, 0.5]);
+  const glareX = useTransform(x, [-0.5, 0.5], ["-100%", "100%"]);
+  const glareY = useTransform(y, [-0.5, 0.5], ["-100%", "100%"]);
 
-  // Adjusted 'top' positions pushed further down the screen to avoid navbar and overlap beautifully
-  const certs = [
-  { src: "/certificates/cert1.png", y: y1, classes: "top-[5%] md:top-[10%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[8%] w-[65vw] md:w-[clamp(180px,18vw,300px)]", rotate: -5, delay: 0 },
-  { src: "/certificates/cert2.png", y: y2, classes: "top-[18%] md:top-[15%] left-1/2 -translate-x-1/2 md:left-1/2 md:-translate-x-[45%] w-[65vw] md:w-[clamp(190px,19vw,320px)]", rotate: 3, delay: 0.3 },
-  { src: "/certificates/cert3.png", y: y3, classes: "top-[31%] md:top-[12%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[8%] w-[65vw] md:w-[clamp(180px,18vw,300px)]", rotate: -2, delay: 0.6 },
-  { src: "/certificates/cert4.png", y: y4, classes: "top-[44%] md:top-[42%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[15%] w-[65vw] md:w-[clamp(185px,18vw,310px)]", rotate: 4, delay: 0.9 },
-  { src: "/certificates/cert5.png", y: y5, classes: "top-[57%] md:top-[46%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[15%] w-[65vw] md:w-[clamp(195px,19vw,330px)]", rotate: -4, delay: 1.2 },
-  { src: "/certificates/cert6.png", y: y6, classes: "top-[70%] md:top-[74%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[25%] w-[65vw] md:w-[clamp(180px,18vw,300px)]", rotate: 2, delay: 1.5 },
-  { src: "/certificates/cert7.png", y: y7, classes: "top-[83%] md:top-[70%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[25%] w-[65vw] md:w-[clamp(185px,18vw,310px)]", rotate: -3, delay: 1.8 }
-  ];
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    
+    x.set(xPct);
+    y.set(yPct);
+  };
 
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <section id="certificates" ref={containerRef} style={{ height: "350vh", position: "relative", background: "#080808", fontFamily: "'DM Sans', sans-serif" }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", width: "100%", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className="relative w-full max-w-sm mx-auto rounded-xl cursor-pointer"
+    >
+      {/* Glare Reflection */}
+      <div 
+        className="absolute inset-0 rounded-xl z-10 pointer-events-none overflow-hidden"
+        style={{ transform: "translateZ(1px)" }}
+      >
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent"
+          style={{
+            opacity: glareOpacity,
+            x: glareX,
+            y: glareY,
+            scale: 2,
+            rotate: "45deg",
+          }}
+        />
+      </div>
+      
+      {/* Certificate Image - pop it forward slightly in 3D space */}
+      <a href={src} target="_blank" rel="noopener noreferrer" className="block relative z-0" style={{ transform: "translateZ(50px)" }}>
+        <img 
+          src={src} 
+          alt={`Certificate ${index + 1}`} 
+          className="w-full h-auto rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] object-cover" 
+        />
+      </a>
+    </motion.div>
+  );
+};
+
+export default function Certificates() {
+  return (
+    <section id="certificates" className="relative py-24 md:py-40 bg-[#080808] font-['DM_Sans',sans-serif] overflow-hidden flex flex-col items-center">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-[radial-gradient(circle,rgba(230,60,47,0.08)_0%,rgba(0,0,0,0)_70%)] blur-[80px] z-0 pointer-events-none"></div>
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
         
-        {/* Zooming Text/Projection */}
-        <motion.div style={{ position: "absolute", scale: textScale, opacity: textOpacity, display: textDisplay, zIndex: 10, flexDirection: "column", alignItems: "center", pointerEvents: "none" }}>
-          <p className="text-[12px] md:text-[1.5vw] mb-4 md:mb-[1vw]" style={{ color: "#e63c2f", letterSpacing: "0.2em", textTransform: "uppercase" }}>Continuous Learning</p>
-          <h2 className="text-[18vw] md:text-[16vw]" style={{ fontFamily: "'Bebas Neue', cursive", color: "#fff", lineHeight: 0.8, margin: 0, whiteSpace: "nowrap" }}>
+        {/* Header */}
+        <div className="text-center mb-16 md:mb-24">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[#e63c2f] text-sm md:text-base tracking-[0.2em] uppercase font-bold mb-4"
+          >
+            Continuous Learning
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="font-['Bebas_Neue',cursive] text-6xl md:text-[8vw] lg:text-9xl text-white m-0 leading-none drop-shadow-2xl"
+          >
             CERTIFICATES
-          </h2>
-        </motion.div>
+          </motion.h2>
+        </div>
 
-        {/* The Floating Certificates Reveal */}
-        <motion.div style={{ position: "absolute", width: "100%", height: "100%", opacity: certOpacity, scale: certScale, zIndex: 5 }}>
-           
-           {/* Center Title & Ambient Glow that fades in when certificates arrive */}
-           <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center", zIndex: 1, pointerEvents: "none", width: "100%" }}>
-              {/* Massive ambient radial glow backlight */}
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70vw", height: "70vw", background: "radial-gradient(circle, rgba(230,60,47,0.15) 0%, rgba(255,255,255,0.05) 40%, rgba(8,8,8,0) 70%)", filter: "blur(40px)", zIndex: -1 }}></div>
-              <p style={{ color: "#e63c2f", fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12, textShadow: "0 0 20px rgba(230,60,47,0.8)" }}>Official</p>
-              <h3 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(48px,9vw,110px)", color: "#fff", margin: 0, whiteSpace: "nowrap", textShadow: "0 10px 50px rgba(255,255,255,0.4)" }}>Recognitions</h3>
-           </div>
-
-           {/* Floating Certificates */}
-           {certs.map((cert, i) =>
-          <motion.div
-            key={i}
-            className={`absolute z-[2] ${cert.classes}`}
-            style={{ y: cert.y }}>
-            
-               {/* Continuous Floating Bob Animation overlayed on scroll Y */}
-               <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: cert.delay }}
-              style={{
-                borderRadius: 16,
-                overflow: "hidden",
-                border: "1px solid rgba(255,255,255,0.3)",
-                background: "rgba(255,255,255,0.05)",
-                padding: 12,
-                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.9), 0 0 40px rgba(255,255,255,0.15)",
-                rotate: cert.rotate
-              }}>
-              
-                 <a href={cert.src} target="_blank" rel="noopener noreferrer" style={{ display: "block", cursor: "pointer", transition: "transform 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.02)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>
-                   <img src={cert.src} alt={`Certificate ${i + 1}`} style={{ width: "100%", height: "auto", borderRadius: 8, display: "block", filter: "brightness(1.15)" }} />
-                 </a>
-               </motion.div>
-             </motion.div>
-          )}
-        </motion.div>
+        {/* 3D Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-14" style={{ perspective: "1500px" }}>
+          {certs.map((cert, i) => (
+            <TiltCard key={i} src={cert.src} index={i} />
+          ))}
+        </div>
 
       </div>
-    </section>);
-
+    </section>
+  );
 }
