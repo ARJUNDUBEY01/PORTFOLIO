@@ -21,11 +21,13 @@ export default function Projects() {
   }, []);
 
   const projects = [
-  { title: "E-Commerce Platform", tag: "Full Stack", desc: "React + Node.js + PostgreSQL. Cart, payments, admin dashboard, real-time inventory.", color: "#e63c2f", tech: ["React", "Node", "Stripe", "PostgreSQL"] },
-  { title: "SaaS Dashboard", tag: "Frontend", desc: "Next.js analytics with live charts, user roles, dark/light mode and export features.", color: "#3c8be6", tech: ["Next.js", "TypeScript", "Recharts", "Tailwind"] },
-  { title: "REST API Engine", tag: "Backend", desc: "High-performance Node.js microservice handling 10k+ req/s with Redis caching.", color: "#3ce68b", tech: ["Node.js", "Express", "Redis", "Docker"] },
-  { title: "Real-time Chat", tag: "Full Stack", desc: "WebSocket messaging with rooms, media uploads, and end-to-end encryption.", color: "#e6c03c", tech: ["Socket.io", "React", "MongoDB", "AWS S3"] },
-  { title: "Portfolio CMS", tag: "Full Stack", desc: "Headless CMS with NestJS and React, drag-and-drop editor and markdown support.", color: "#c03ce6", tech: ["NestJS", "React", "GraphQL", "Prisma"] }];
+  { title: "Subscription Management System", tag: "Full Stack", desc: "Enterprise-level subscription handling with Odoo integration, recurring billing, and client portal.", color: "#3caee6", tech: ["Odoo", "Python", "React", "PostgreSQL"], link: "https://github.com/ARJUNDUBEY01/OdooXIndus.git" },
+  { title: "Core Inventory", tag: "Hackathon", desc: "Advanced inventory tracking system developed for the Odoo Indus Hackathon, optimizing warehouse operations and stock movements.", color: "#3ce68b", tech: ["Odoo", "Python", "XML", "PostgreSQL"], link: "https://github.com/ARJUNDUBEY01/OddoXIndus-Hackathon.git" },
+  { title: "E-Commerce Platform", tag: "Full Stack", desc: "React + Node.js + PostgreSQL. Cart, payments, admin dashboard, real-time inventory.", color: "#e63c2f", tech: ["React", "Node", "Stripe", "PostgreSQL"], link: "#" },
+  { title: "SaaS Dashboard", tag: "Frontend", desc: "Next.js analytics with live charts, user roles, dark/light mode and export features.", color: "#3c8be6", tech: ["Next.js", "TypeScript", "Recharts", "Tailwind"], link: "#" },
+  { title: "REST API Engine", tag: "Backend", desc: "High-performance Node.js microservice handling 10k+ req/s with Redis caching.", color: "#3ce68b", tech: ["Node.js", "Express", "Redis", "Docker"], link: "#" },
+  { title: "Real-time Chat", tag: "Full Stack", desc: "WebSocket messaging with rooms, media uploads, and end-to-end encryption.", color: "#e6c03c", tech: ["Socket.io", "React", "MongoDB", "AWS S3"], link: "#" },
+  { title: "Portfolio CMS", tag: "Full Stack", desc: "Headless CMS with NestJS and React, drag-and-drop editor and markdown support.", color: "#c03ce6", tech: ["NestJS", "React", "GraphQL", "Prisma"], link: "#" }];
 
   const cardW = 380,gap = 28;
   const maxTx = projects.length * (cardW + gap) - 900;
@@ -40,19 +42,21 @@ export default function Projects() {
         <div style={{ overflow: "hidden", paddingLeft: 52 }}>
           <div style={{ display: "flex", gap, transform: `translateX(${-scrollX * Math.max(0, maxTx)}px)`, transition: "transform 0.0s linear", willChange: "transform" }}>
             {projects.map((p) =>
-            <div key={p.title} style={{ minWidth: cardW, height: 340, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: "36px 32px", display: "flex", flexDirection: "column", justifyContent: "space-between", cursor: "pointer" }}>
-                <div>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
-                    <span style={{ padding: "5px 14px", borderRadius: 50, fontSize: 11, background: p.color + "20", color: p.color, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500 }}>{p.tag}</span>
-                    <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 22 }}>↗</span>
+              <a key={p.title} href={p.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                <div style={{ minWidth: cardW, height: 340, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: "36px 32px", display: "flex", flexDirection: "column", justifyContent: "space-between", cursor: "pointer", transition: "all 0.3s ease" }}>
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
+                      <span style={{ padding: "5px 14px", borderRadius: 50, fontSize: 11, background: p.color + "20", color: p.color, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500 }}>{p.tag}</span>
+                      <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 22 }}>↗</span>
+                    </div>
+                    <h3 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: 32, color: "#fff", marginBottom: 14 }}>{p.title}</h3>
+                    <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 1.7, fontWeight: 300 }}>{p.desc}</p>
                   </div>
-                  <h3 style={{ fontFamily: "'Bebas Neue', cursive", fontSize: 32, color: "#fff", marginBottom: 14 }}>{p.title}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 1.7, fontWeight: 300 }}>{p.desc}</p>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {p.tech.map((t) => <span key={t} style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", padding: "4px 10px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 50 }}>{t}</span>)}
+                  </div>
                 </div>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {p.tech.map((t) => <span key={t} style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", padding: "4px 10px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 50 }}>{t}</span>)}
-                </div>
-              </div>
+              </a>
             )}
           </div>
         </div>

@@ -20,17 +20,24 @@ export default function Certificates() {
   const certScale = useTransform(scrollYProgress, [0.28, 0.4], [0, 1]);
 
   // Very gentle Y parallax speeds so they don't crash into the navbar
-  const y1 = useTransform(scrollYProgress, [0.3, 1], ["0vh", "-5vh"]);
-  const y2 = useTransform(scrollYProgress, [0.3, 1], ["5vh", "-10vh"]);
-  const y3 = useTransform(scrollYProgress, [0.3, 1], ["-2vh", "-8vh"]);
-  const y4 = useTransform(scrollYProgress, [0.3, 1], ["10vh", "-4vh"]);
+  const y1 = useTransform(scrollYProgress, [0.3, 1], ["0vh", "-8vh"]);
+  const y2 = useTransform(scrollYProgress, [0.3, 1], ["5vh", "-12vh"]);
+  const y3 = useTransform(scrollYProgress, [0.3, 1], ["-2vh", "-5vh"]);
+  const y4 = useTransform(scrollYProgress, [0.3, 1], ["8vh", "-15vh"]);
+  const y5 = useTransform(scrollYProgress, [0.3, 1], ["-5vh", "2vh"]);
+  const y6 = useTransform(scrollYProgress, [0.3, 1], ["10vh", "-6vh"]);
+  const y7 = useTransform(scrollYProgress, [0.3, 1], ["-8vh", "-10vh"]);
 
-  // Adjusted 'top' positions pushed further down the screen (avoiding navbar)
+  // Adjusted 'top' positions pushed further down the screen to avoid navbar and overlap beautifully
   const certs = [
-  { src: "/certificates/cert1.png", y: y1, classes: "top-[10%] md:top-[22%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[5%] w-[80vw] md:w-[clamp(260px,25vw,400px)]", rotate: -4, delay: 0 },
-  { src: "/certificates/cert2.png", y: y2, classes: "top-[32%] md:top-[42%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[5%] w-[80vw] md:w-[clamp(280px,28vw,420px)]", rotate: 3, delay: 0.5 },
-  { src: "/certificates/cert3.png", y: y3, classes: "top-[54%] md:top-[62%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[12%] w-[80vw] md:w-[clamp(250px,24vw,380px)]", rotate: 2, delay: 1 },
-  { src: "/certificates/cert4.png", y: y4, classes: "top-[76%] md:top-[68%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[18%] w-[80vw] md:w-[clamp(240px,22vw,350px)]", rotate: -3, delay: 1.5 }];
+  { src: "/certificates/cert1.png", y: y1, classes: "top-[5%] md:top-[10%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[8%] w-[65vw] md:w-[clamp(180px,18vw,300px)]", rotate: -5, delay: 0 },
+  { src: "/certificates/cert2.png", y: y2, classes: "top-[18%] md:top-[15%] left-1/2 -translate-x-1/2 md:left-1/2 md:-translate-x-[45%] w-[65vw] md:w-[clamp(190px,19vw,320px)]", rotate: 3, delay: 0.3 },
+  { src: "/certificates/cert3.png", y: y3, classes: "top-[31%] md:top-[12%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[8%] w-[65vw] md:w-[clamp(180px,18vw,300px)]", rotate: -2, delay: 0.6 },
+  { src: "/certificates/cert4.png", y: y4, classes: "top-[44%] md:top-[42%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[15%] w-[65vw] md:w-[clamp(185px,18vw,310px)]", rotate: 4, delay: 0.9 },
+  { src: "/certificates/cert5.png", y: y5, classes: "top-[57%] md:top-[46%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[15%] w-[65vw] md:w-[clamp(195px,19vw,330px)]", rotate: -4, delay: 1.2 },
+  { src: "/certificates/cert6.png", y: y6, classes: "top-[70%] md:top-[74%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[25%] w-[65vw] md:w-[clamp(180px,18vw,300px)]", rotate: 2, delay: 1.5 },
+  { src: "/certificates/cert7.png", y: y7, classes: "top-[83%] md:top-[70%] left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[25%] w-[65vw] md:w-[clamp(185px,18vw,310px)]", rotate: -3, delay: 1.8 }
+  ];
 
 
   return (
